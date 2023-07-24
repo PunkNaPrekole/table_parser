@@ -5,7 +5,6 @@ from openpyxl import load_workbook
 tb = load_workbook('sample.xlsx')
 tb_names = tb.sheetnames
 
-alph = 'ABCDEFGHIJKLMNOPQRSTUVW'  # алфавит для перебора по столбцам таблицы
 keys = ['C', 'M', 'Y', 'K', 'Pantone']  # ключи полей
 
 pantone = []
@@ -14,10 +13,10 @@ pantone = []
 def parser():
     for item in tb_names:
         page = tb[item]
-        for char in alph:
+        for col in page.iter_cols():
             obj = []
-            for i in range(1, 21):
-                data_str = page[char + str(i)].value
+            for cell in col:
+                data_str = cell.value
                 if data_str and not ("PANTONE" in data_str):
                     for a in data_str.split(" "):
                         obj.append(int(a.split(":")[1]))
@@ -26,6 +25,7 @@ def parser():
                 if len(obj) == 5:
                     obj.append(obj.pop(0))
                     pantone.append(dict(zip(keys, obj)))
+                    print(obj)
                     obj = []
 
     with open('data.json', 'w') as data_f:
