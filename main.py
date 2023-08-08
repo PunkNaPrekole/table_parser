@@ -25,7 +25,6 @@ def parser():
                 if len(obj) == 5:
                     obj.append(obj.pop(0))
                     pantone.append(dict(zip(keys, obj)))
-                    print(obj)
                     obj = []
 
     with open('data.json', 'w') as data_f:
